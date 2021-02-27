@@ -8,7 +8,8 @@ const errorHandler = require("./middlewares/errorHandler");
 const fileupload = require("express-fileupload");
 
 // Route files
-const bootcamp = require("./routes/bootcamps");
+const bootcampRouter = require("./routes/bootcamps");
+const courseRouter = require("./routes/course");
 
 // Load env vars
 dotenv.config({ path: "./config/.env" });
@@ -31,7 +32,8 @@ app.use(fileupload());
 app.use(express.static(path.join(__dirname, "public")));
 
 // Mount routes
-app.use("/api/v1/bootcamps", bootcamp);
+app.use("/api/v1/bootcamps", bootcampRouter);
+app.use("/api/v1/courses", courseRouter);
 
 app.use(errorHandler);
 

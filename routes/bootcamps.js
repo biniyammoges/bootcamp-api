@@ -8,7 +8,13 @@ const {
   uploadBootcampPhoto,
 } = require("../controllers/bootcamps");
 
+// course router
+const courseRouter = require("../routes/course");
+
 const router = express.Router();
+
+// Re-route to course router
+router.use("/:bootcampId/courses", courseRouter);
 
 router.route("/").get(getBootcamps).post(createBootcamp);
 
