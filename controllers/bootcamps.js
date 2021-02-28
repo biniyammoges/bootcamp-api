@@ -7,57 +7,7 @@ const path = require("path");
 // @route GET /api/v1/bootcamps
 // @access public
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
-  let query;
-
-  // copy query obj
-  let reqQuery = { ...req.query };
-
-  // Fields to remove from query
-  removeFields = ["select", "sort", "limit", "skip", "page"];
-
-  // remove fields
-  removeFields.forEach((params) => delete reqQuery[params]);
-
-  // Change to string
-  let queryStr = JSON.stringify(reqQuery);
-
-  queryStr = queryStr.replace(
-    /\b(gte|gt|lte|lt|in|eq|nin|ne)\b/g,
-    (match) => `$${match}`
-  );
-
-  query = Bootcamp.find(JSON.parse(queryStr));
-
-  // select fiedls
-  if (req.query.select) {
-    const fields = req.query.select.split(",").join(" ");
-    query = query.select(fields);
-  }
-
-  // Sort
-  if (req.query.sort) {
-    const sortBy = req.query.sort.split(",").join(" ");
-    query = query.sort(sortBy);
-  } else {
-    query = query.sort("-createdAt");
-  }
-
-  // Pagination
-  const page = parseInt(req.query.page, 10) || 1;
-  const limit = parseInt(req.query.limit) || 1;
-  // const skip = parseInt(req.)
-
-  // Executing query
-  const bootcamps = await query.populate({
-    path: "courses",
-    select: "title description",
-  });
-
-  res.json({
-    success: true,
-    counts: bootcamps.length,
-    bootcamps,
-  });
+  res.status(200).json(res.advancedResults);
 });
 
 // @desc Get single bootcamps
