@@ -4,12 +4,13 @@ const path = require("path");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const connectDb = require("./config/db");
-const errorHandler = require("./middlewares/errorHandler");
+const { errorHandler, notFound } = require("./middlewares/errorHandler");
 const fileupload = require("express-fileupload");
 
 // Route files
 const bootcampRouter = require("./routes/bootcamps");
 const courseRouter = require("./routes/course");
+const authRouter = require("./routes/auth");
 
 // Load env vars
 dotenv.config({ path: "./config/.env" });
@@ -34,7 +35,10 @@ app.use(express.static(path.join(__dirname, "public")));
 // Mount routes
 app.use("/api/v1/bootcamps", bootcampRouter);
 app.use("/api/v1/courses", courseRouter);
+app.use("/api/v1/auth", authRouter);
 
+// Error middlewares
+app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;

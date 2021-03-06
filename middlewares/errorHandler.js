@@ -1,12 +1,21 @@
 const ErrorResponse = require("../utils/errorResponse");
 
+const notFound = (req, res, next) => {
+  next(
+    new ErrorResponse(
+      `Route not found - ${req.method} - ${req.originalUrl}`,
+      404
+    )
+  );
+};
+
 const errorHandler = (err, req, res, next) => {
   let error = { ...err };
 
   error.message = err.message;
 
   // Log for dev
-  console.log(err.name);
+  console.log(err);
 
   // Mongoose bad object
   if (err.name === "CastError") {
@@ -32,4 +41,4 @@ const errorHandler = (err, req, res, next) => {
   });
 };
 
-module.exports = errorHandler;
+module.exports = { errorHandler, notFound };
