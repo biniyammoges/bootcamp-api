@@ -6,6 +6,7 @@ const morgan = require("morgan");
 const connectDb = require("./config/db");
 const { errorHandler, notFound } = require("./middlewares/errorHandler");
 const fileupload = require("express-fileupload");
+const cookieParser = require("cookie-parser");
 
 // Route files
 const bootcampRouter = require("./routes/bootcamps");
@@ -22,6 +23,7 @@ const app = express();
 
 // Body parser
 app.use(express.json());
+app.use(cookieParser());
 
 // Dev logging moddleware
 process.env.NODE_ENV === "development" && app.use(morgan("dev"));
